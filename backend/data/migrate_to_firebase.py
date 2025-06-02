@@ -1,5 +1,11 @@
 import pandas as pd
-from ..firebase.firebase_admin import FirebaseAdmin
+import os
+import sys
+
+# Add the project root directory to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from backend.firebase.firebase_admin import FirebaseAdmin
 
 def migrate_data_to_firebase():
     """CSV 데이터를 Firebase로 마이그레이션"""

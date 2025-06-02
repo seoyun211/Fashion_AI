@@ -1,0 +1,3 @@
+"""
+Fashion AI Models Package
+""" 

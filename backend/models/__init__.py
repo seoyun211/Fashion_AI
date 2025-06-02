@@ -1,3 +1,3 @@
 """
-AI models module
+Fashion AI Models Package
 """ 

@@ -14,10 +14,53 @@ export interface Product {
 }
 
 export interface TimeSeriesData {
-  상품명: string;
-  날짜: string;
-  판매량: number;
-  재고량: number;
+  date: string;
+  value: number;
+}
+
+export interface FilterOptions {
+  category?: string;
+  style?: string;
+  material?: string;
+  color?: string;
+  season?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export interface ProductList {
+  products: Product[];
+  total: number;
+}
+
+export interface TrendReport {
+  salesTrend: TimeSeriesData[];
+  stockTrend: TimeSeriesData[];
+}
+
+export interface SalesReport {
+  daily: TimeSeriesData[];
+  weekly: TimeSeriesData[];
+  monthly: TimeSeriesData[];
+}
+
+export interface ProductFilter {
+  category?: string;
+  style?: string;
+  material?: string;
+  color?: string;
+  season?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: 'price' | 'likes' | 'reviews';
+  order?: 'asc' | 'desc';
+}
+
+export interface APIError {
+  error: {
+    code: string;
+    message: string;
+  };
 }
 
 export interface TrendChartProps {
@@ -36,13 +79,4 @@ export interface FilterPanelProps {
   colors: string[];
   seasons: string[];
   onFilterChange: (filters: FilterOptions) => void;
-}
-
-export interface FilterOptions {
-  category?: string;
-  style?: string;
-  material?: string;
-  color?: string;
-  season?: string;
-  priceRange?: [number, number];
 } 

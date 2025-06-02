@@ -1,6 +1,6 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from .exceptions import APIError
+from api.exceptions import APIError
 
 async def api_error_handler(request: Request, exc: APIError):
     """API 에러 핸들러"""

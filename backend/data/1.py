@@ -64,7 +64,7 @@ def generate_dummy_data(shop_name, num_products=50):
             '가격': f"{price:,}",
             '쇼핑몰': shop_name,
             '좋아요개수': str(np.random.randint(shop_info['likes_range'][0], shop_info['likes_range'][1])),
-            '이미지': f"https://example.com/{shop_name.lower()}/image{_}.jpg",
+            '이미지': f"https://picsum.photos/400/600?random={_}",
             '리뷰수': str(np.random.randint(50, 1000)),
             '스타일': np.random.choice(styles),
             '카테고리': category,

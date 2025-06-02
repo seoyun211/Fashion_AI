@@ -3,8 +3,8 @@ import { TrendChartProps } from '@/types';
 
 export default function TrendChart({ data, type }: TrendChartProps) {
   const chartData = data.map(item => ({
-    date: new Date(item.날짜).toLocaleDateString(),
-    value: type === 'sales' ? item.판매량 : item.재고량
+    date: new Date(item.date).toLocaleDateString(),
+    value: item.value
   }));
 
   return (

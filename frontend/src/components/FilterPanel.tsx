@@ -10,9 +10,8 @@ export default function FilterPanel({
   onFilterChange
 }: FilterPanelProps) {
   const [filters, setFilters] = useState<FilterOptions>({});
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
 
-  const handleFilterChange = (key: keyof FilterOptions, value: string | [number, number]) => {
+  const handleFilterChange = (key: keyof FilterOptions, value: string | number | undefined) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -28,7 +27,7 @@ export default function FilterPanel({
           <select
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2"
             value={filters.category || ''}
-            onChange={(e) => handleFilterChange('category', e.target.value)}
+            onChange={(e) => handleFilterChange('category', e.target.value || undefined)}
           >
             <option value="">전체</option>
             {categories.map(category => (
@@ -42,7 +41,7 @@ export default function FilterPanel({
           <select
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2"
             value={filters.style || ''}
-            onChange={(e) => handleFilterChange('style', e.target.value)}
+            onChange={(e) => handleFilterChange('style', e.target.value || undefined)}
           >
             <option value="">전체</option>
             {styles.map(style => (
@@ -57,23 +56,23 @@ export default function FilterPanel({
             <input
               type="number"
               className="w-1/2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2"
-              value={priceRange[0]}
+              value={filters.minPrice || ''}
               onChange={(e) => {
-                const newRange: [number, number] = [Number(e.target.value), priceRange[1]];
-                setPriceRange(newRange);
-                handleFilterChange('priceRange', newRange);
+                const value = e.target.value ? Number(e.target.value) : undefined;
+                handleFilterChange('minPrice', value);
               }}
+              placeholder="최소 가격"
             />
             <span>~</span>
             <input
               type="number"
               className="w-1/2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-2"
-              value={priceRange[1]}
+              value={filters.maxPrice || ''}
               onChange={(e) => {
-                const newRange: [number, number] = [priceRange[0], Number(e.target.value)];
-                setPriceRange(newRange);
-                handleFilterChange('priceRange', newRange);
+                const value = e.target.value ? Number(e.target.value) : undefined;
+                handleFilterChange('maxPrice', value);
               }}
+              placeholder="최대 가격"
             />
           </div>
         </div>
@@ -87,7 +86,7 @@ export default function FilterPanel({
                   ? 'bg-primary text-white'
                   : 'bg-gray-100 dark:bg-gray-700'
               }`}
-              onClick={() => handleFilterChange('season', season)}
+              onClick={() => handleFilterChange('season', filters.season === season ? undefined : season)}
             >
               {season}
             </button>

@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import router
+from .exceptions import APIError
+from .error_handlers import api_error_handler, general_exception_handler
 
 app = FastAPI(
     title="Fashion AI API",
@@ -16,6 +18,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 에러 핸들러 등록
+app.add_exception_handler(APIError, api_error_handler)
+app.add_exception_handler(Exception, general_exception_handler)
 
 # 라우터 등록
 app.include_router(router, prefix="/api/v1")

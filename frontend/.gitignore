@@ -20,3 +20,5 @@ __pycache__/
 # 설정파일
 .env
 *.log
+
+echo "fashion-trend-analyzer/" >> .gitignore

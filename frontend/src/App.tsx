@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from '.pages/HomePage.tsx';
-import TrendCardFeed from './src/pages/TrendCardFeed';
-import UserInputPage from './src/pages/UserInputPage';
-import RecommendationPage from './src/pages/RecommendationPage';
-import NavBar from './src/components/NavBar';
-import Footer from './src/components/Footer';
+import HomePage from '.pages/HomePage';
+import TrendCardFeed from './pages/TrendFeedPage';
+import UserInputPage from './pages/UserInputPage';
+import RecommendationPage from './pages/RecommendationPage';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
 
 function App() {
   return (

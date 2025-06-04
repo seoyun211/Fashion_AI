@@ -1,12 +1,28 @@
+// tsconfig.json
 {
   "compilerOptions": {
     "target": "ESNext",
+    "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "jsx": "react-jsx",             // ✅ 이 줄이 없으면 추가!
     "strict": true,
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": ["src"]
+}
+
+// types/index.ts
+export interface UserStyleInput {
+  gender: 'male' | 'female';
+  styles: string[];
+  colors: string[];
+}
+
+export interface Recommendation {
+  name: string;
+  image: string;
+  reason: string;
 }

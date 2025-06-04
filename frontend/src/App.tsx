@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './src/pages/HomePage';
+import HomePage from '.pages/HomePage.tsx';
 import TrendCardFeed from './src/pages/TrendCardFeed';
 import UserInputPage from './src/pages/UserInputPage';
 import RecommendationPage from './src/pages/RecommendationPage';

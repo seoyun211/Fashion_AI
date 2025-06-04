@@ -1,28 +1,19 @@
-// tsconfig.json
 {
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "strict": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
     "esModuleInterop": true,
+    "allowJs": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true
   },
-  "include": ["src"]
-}
-
-// types/index.ts
-export interface UserStyleInput {
-  gender: 'male' | 'female';
-  styles: string[];
-  colors: string[];
-}
-
-export interface Recommendation {
-  name: string;
-  image: string;
-  reason: string;
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

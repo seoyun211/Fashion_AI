@@ -1,3 +1,20 @@
-﻿상품명,가격,쇼핑몰,별점(5점),이미지,리뷰수,스타일
-린넨 와이드 팬츠,"45,000",더블유컨셉,1500,https://example.com/image3.jpg,278,캐주얼
-실크 미니 원피스,"89,000",더블유컨셉,2100,https://example.com/image4.jpg,342,러블리
+﻿상품명, 가격, 쇼핑몰, 별점(5점), 이미지, 리뷰수, 스타일, 분류, 판매량
+
+엠마 린넨 스트랩 자켓, "168,000", 룩캐스트, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/66/306811066_BA87556.jpg, 250, 모던, 아우터, 9073
+다나 크롭 트위드 자켓, "188,000", 룩캐스트, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/48/301683248_JK57982.jpg, 1121, 모던, 아우터, 9999
+볼륨 소프트 점퍼, "179,000", 루에브르, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/61/306829761_GN62748.jpg, 45, 캐주얼, 아우터, 2858
+Russu tweed Crop jacket, "218,000", 이바나헬싱키, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/96/302729896_JM15910.jpg, 565, 시크, 아우터, 9899
+SCOOP NECK SLIM FIT HALF SLEEVE JACKET, "238,000", 르하스, 5, https://product-image.wconcept.co.kr/productimg/image/img0/90/306920690_JG64648.jpg, 7, 캐주얼, 아우터, 1201
+Embroidery Western Windbreaker, "298,000", 프리터, 5, https://product-image.wconcept.co.kr/productimg/image/img0/02/306740602_MV62722.jpg, 14, 캐주얼, 아우터, 1259
+키웨스트 하프 슬리브 싱글 자켓, "198,000", 앤유, 5, https://product-image.wconcept.co.kr/productimg/image/img0/13/306799813_DJ19091.jpg, 21, 캐주얼, 아우터, 3372
+HALF SLEEVE BELTED LINEN JACKET BLACK, "199,000", 던스트, 5, https://product-image.wconcept.co.kr/productimg/image/img0/41/302739441_GG18360.jpg, 336, 캐주얼, 아우터, 9810
+Tweed Snapped Crop Jacket , "219,000", 루에브르, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/34/305879934_GG10489.jpg, 52, 모던, 아우터, 1330
+SINGLE STITCH DETAILED CROP JACKET, "218,000", 엔오르, 4, https://product-image.wconcept.co.kr/productimg/image/img0/69/306868169_XD22620.jpg, 248, 모던, 아우터, 5756
+Button Strap Tweed Jacket, "188,000", 에트몽, 5, https://product-image.wconcept.co.kr/productimg/image/img0/93/305840093_LO53260.jpg, 193, 시크, 아우터, 5313
+Iconic Peplum Jacket, "248,000", 플로움, 5, https://product-image.wconcept.co.kr/productimg/image/img0/13/306760613_BQ53635.jpg, 29, 시크, 아우터, 4588
+썸머 트위트 스쿱넥 셔트 자켓, "179,000", 우이, 5, https://product-image.wconcept.co.kr/productimg/image/img0/93/306910293_IN26369.jpg, 8, 페미닌, 아우터, 1997
+Cap-sleeve Jacket, "268,000", 르로망, 4.9, https://product-image.wconcept.co.kr/productimg/image/img0/08/306068408_LS83637.jpg, 25, 페미닌, 아우터, 3921
+Leena tweed jacket, "218,000", 이바나 헬싱키, 5, https://product-image.wconcept.co.kr/productimg/image/img0/93/305810993_GB16858.jpg, 63, 러블리, 아우터, 2422
+하운스투스 훌 반팔 자켓, "165,000", 더제이수, 5, https://product-image.wconcept.co.kr/productimg/image/img0/18/306836218_TW50824.jpg, 10, 모던, 아우터, 1473
+노카라 커팅 디테일 자켓, "279,000", 온앤온, 5, https://product-image.wconcept.co.kr/productimg/image/img0/45/306898645_KW38958.jpg, 6, 캐주얼, 아우터, 740
+Summer Wool Belted Half Sleeve Jacket, "179,000", 프론트로우, 5, https://product-image.wconcept.co.kr/productimg/image/img0/47/306759547_NJ38755.jpg, 17, 캐주얼, 아우터, 2419

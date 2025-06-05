@@ -1,16 +1,18 @@
-﻿상품명,가격,쇼핑몰,별점(5점),이미지,리뷰수,스타일, 분류
-Our basic! 캡내장 튜브탑, 22.900, 슬로우앤드, 4.5, ?, 10.543, 캐주얼, 상의
-여리핏 코튼셔츠, 37.810, 슬로우앤드, 4.8, ?, 3.767, 캐주얼, 상의
-쫀쫀베이직 슬리브리스, 16.050, 슬로우앤드, 4.8, ?, 24.509, 캐주얼, 상의
-유넥 반팔티, 18.430, 블랙업, 4.9, ?, 26.809, 심플베이직, 상의
-오버핏 스프라이프 셔츠, 23.310, 베이델리, 4.7, ?, 4.221, 캐주얼, 상의
-포지티브 크롭티, 18.900, 더클립, 4.8, ?, 447, 심플베이직, 상의
-어도어 타이블라우스, 26.340, 리얼코코, 4.4, ?, 839, 러블리, 상의
-덴시아 스트라이프 셔츠, 19.500, 매니크, 4.8, ?, 42, 모던시크, 상의
-하프 클레어 반팔, 15.720, 디어먼트, 4.8, ?, 4.069, 심플베이직, 상의
-박스키튼 오버핏 티셔츠, 13.570, 토마토스토어, 4.8, ?, 42, 유니크, 상의
-레터조 투웨이 티셔츠, 39.600, 레터프롬문, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2025/5/19/9430_202505190943220623_72474.jpeg?width=720&height=720&quality=80&format=webp, 165, 러블리, 상의
-골지 뷔스티에 탑, 19.000, 크림치즈마켓, 4.7, https://cf.product-image.s.zigzag.kr/original/d/2025/2/14/5721_202502141353210153_79297.jpeg?width=720&height=720&quality=80&format=webp, 856, 심플베이직, 상의
-슈가 언발 스냅 반팔, 17.100, 고고싱, 4.7, https://cf.product-image.s.zigzag.kr/original/c/16/141/783/161417831-8722298924924746721.jpeg?width=720&height=720&quality=80&format=webp, 18, 심플베이직, 상의
-베베크루 가디건 반팔, 22.000, 핫텐, 4.8, https://cf.product-image.s.zigzag.kr/original/c/16/118/364/161183643-5863205629379489556.jpeg?width=720&height=720&quality=80&format=webp, 19, 심플베이직, 상의
-프릴 스트라이프 반팔 블라우스, 41.000, 페트리코어, 4.0, https://cf.product-image.s.zigzag.kr/original/c/16/205/193/162051932-8463477284320655338.gif?width=720&height=720&quality=80&format=jpeg, 2, 캐주얼, 상의
+﻿상품명,가격,쇼핑몰,별점(5점),이미지, 리뷰수, 스타일, 분류, 판매량
+Our basic! 캡내장 튜브탑, 22.900, 슬로우앤드, 4.5, https://cf.product-image.s.zigzag.kr/original/d/2024/6/25/2833_202406251436280463_38509.jpeg?width=720&height=720&quality=80&format=webp, 10.543, 캐주얼, 상의, 5.230
+여리핏 코튼셔츠, 37.810, 슬로우앤드, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2024/8/27/2833_202408271426270349_48521.jpeg?width=720&height=720&quality=80&format=webp, 3.767, 캐주얼, 상의, 332
+쫀쫀베이직 슬리브리스, 16.050, 슬로우앤드, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2024/6/25/2833_202406251320240722_49138.jpeg?width=720&height=720&quality=80&format=webp, 24.509, 캐주얼, 상의, 4561
+유넥 반팔티, 18.430, 블랙업, 4.9, https://cf.product-image.s.zigzag.kr/original/d/2025/2/16/517_202502162020470652_63561.jpeg?width=720&height=720&quality=80&format=webp, 26.809, 심플베이직, 상의, 45
+파머 오버핏 체크셔츠, 31.900, 베이델리, 4.7, https://cf.product-image.s.zigzag.kr/original/d/2025/4/28/4600_202504281548470967_93210.jpeg?width=720&height=720&quality=80&format=webp, 4.244, 캐주얼, 상의, 781
+포지티브 크롭티, 18.900, 더클립, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2024/4/9/3692_202404091829050017_44444.jpeg?width=720&height=720&quality=80&format=webp, 447, 심플베이직, 상의, 211
+어도어 타이블라우스, 26.340, 리얼코코, 4.4, https://cf.product-image.s.zigzag.kr/original/d/2025/4/23/200_202504231626120456_25252.jpeg?width=720&height=720&quality=80&format=webp, 839, 러블리, 상의, 369
+덴시아 스트라이프 셔츠, 19.500, 매니크, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2025/5/7/9512_202505071731220341_95467.gif?width=720&height=720&quality=80&format=jpeg, 42, 모던시크, 상의, 7210
+하프 클레어 반팔, 15.720, 디어먼트, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2025/3/6/202_202503061332020963_79838.gif?width=720&height=720&quality=80&format=jpeg, 4.069, 심플베이직, 상의, 154
+박스키튼 오버핏 티셔츠, 13.570, 토마토스토어, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2025/3/13/8835_202503131000320895_25360.jpeg?width=720&height=720&quality=80&format=webp, 42, 유니크, 상의, 85
+레터조 투웨이 티셔츠, 39.600, 레터프롬문, 4.8, https://cf.product-image.s.zigzag.kr/original/d/2025/5/19/9430_202505190943220623_72474.jpeg?width=720&height=720&quality=80&format=webp, 165, 러블리, 상의, 47
+골지 뷔스티에 탑, 19.000, 크림치즈마켓, 4.7, https://cf.product-image.s.zigzag.kr/original/d/2025/2/14/5721_202502141353210153_79297.jpeg?width=720&height=720&quality=80&format=webp, 856, 심플베이직, 상의, 154
+슈가 언발 스냅 반팔, 17.100, 고고싱, 4.7, https://cf.product-image.s.zigzag.kr/original/c/16/141/783/161417831-8722298924924746721.jpeg?width=720&height=720&quality=80&format=webp, 18, 심플베이직, 상의, 785
+베베크루 가디건 반팔, 22.000, 핫텐, 4.8, https://cf.product-image.s.zigzag.kr/original/c/16/118/364/161183643-5863205629379489556.jpeg?width=720&height=720&quality=80&format=webp, 19, 심플베이직, 상의, 140
+프릴 스트라이프 반팔 블라우스, 41.000, 페트리코어, 4.0, https://cf.product-image.s.zigzag.kr/original/c/16/205/193/162051932-8463477284320655338.gif?width=720&height=720&quality=80&format=jpeg, 2, 캐주얼, 상의, 3002
+에어리 썸머와이드 팬츠, 45.000, 슬로우앤드, 4.8, https://cf.product-image.s.zigzag.kr/original/c/16/233/094/162330940-8201783214669214594.jpeg?width=720&height=720&quality=80&format=webp, 19, 심플베이직, 하의, 54
+완변핵 히든밴등 팬츠, 41.300, 모어라운드, 4.7, https://cf.product-image.s.zigzag.kr/original/d/2025/4/29/6309_202504291435220614_90011.jpeg?width=720&height=720&quality=80&format=webp, 25.525, 캐주얼, 하의, 4100

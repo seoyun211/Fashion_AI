@@ -1,3 +1,0 @@
-"""
-Fashion AI Backend Package
-""" 

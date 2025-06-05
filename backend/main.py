@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from datetime import datetime, timedelta
 import os
+from routes import image_search
 
 app = FastAPI()
 
@@ -90,6 +91,8 @@ async def get_filter_options():
         "colors": ['블랙', '화이트', '네이비', '베이지', '그레이', '브라운', '카키', '레드', '블루'],
         "seasons": ['봄', '여름', '가을', '겨울', '사계절']
     }
+
+app.include_router(image_search.router)
 
 if __name__ == "__main__":
     import uvicorn

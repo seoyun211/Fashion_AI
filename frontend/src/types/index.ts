@@ -1,13 +1,24 @@
-// 사용자 입력 정보 타입
-export interface UserStyleInput {
-  gender: 'male' | 'female';
-  styles: string[];
-  colors: string[];
+// types/index.ts
+export interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  gradient: string;
 }
 
-// 추천 결과 항목 타입
-export interface Recommendation {
+export interface PopularProduct {
+  id: string;
   name: string;
-  image: string;
-  reason: string;
+  price: string;
+  rank: number;
 }
+
+export interface AIRecommendation {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  type: 'style' | 'color' | 'occasion';
+}
+
+// 

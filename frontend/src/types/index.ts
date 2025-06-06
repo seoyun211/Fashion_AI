@@ -21,4 +21,20 @@ export interface AIRecommendation {
   type: 'style' | 'color' | 'occasion';
 }
 
+export interface ToastProps {
+  message: string;
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+export interface AIRecommendationCardProps {
+  recommendation: AIRecommendation;
+  onClick: (type: string) => void;
+  isLoading: boolean;
+  isActive: boolean;
+}
+
+export interface FunctionComponentProps {
+  onBack: () => void;
+}
 // 

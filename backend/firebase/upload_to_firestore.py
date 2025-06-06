@@ -17,55 +17,61 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 
-# ✅ 🔥 컬렉션 초기화 함수 위치 (💡 여기에 넣기!)
-def clear_products_collection():
-    docs = db.collection("products").stream()
-    for doc in docs:
-        doc.reference.delete()
-    print("🧹 기존 products 컬렉션 전체 삭제 완료!")
-
-clear_products_collection()
-
-## CSV 병합
+# 🔍 CSV 병합
 csv_files = glob.glob(os.path.join(CSV_FOLDER, "*.csv"))
 print(f"🔍 총 {len(csv_files)}개의 CSV 파일을 찾았어요.")
 
-df_list = [pd.read_csv(file) for file in csv_files]
+df_list = [pd.read_csv(file, quotechar='"') for file in csv_files if os.path.getsize(file) > 0]
 merged_df = pd.concat(df_list, ignore_index=True)
 print(f"📊 병합된 데이터 총 {len(merged_df)}개 항목")
 
-# 업로드
+# 🔁 업로드
 upload_count = 0
 for _, row in merged_df.iterrows():
     try:
         # 가격 처리
-        price_raw = str(row["가격"]).replace(",", "").replace("원", "").strip()
-        if '.' in price_raw:
-            price = int(float(price_raw) * 1000)
-        else:
-            price = int(price_raw)
+        price_raw = str(row["가격"]).replace(",", "").replace("원", "").replace('"', '').strip()
+        price = int(float(price_raw) * 1000) if "." in price_raw else int(price_raw)
 
         # 리뷰수, 판매량 처리
-        reviews_raw = str(row["리뷰수"]).replace(",", "").strip()
-        sales_raw = str(row["판매량"]).replace(",", "").strip()
+        reviews_raw = row["리뷰수"]
+        sales_raw = row["판매량"]
 
-        reviews = int(float(reviews_raw)) if reviews_raw else 0
-        sales = int(float(sales_raw)) if sales_raw else 0
+        reviews = int(float(str(reviews_raw).replace(",", "").strip())) if pd.notna(reviews_raw) else 0
+        sales = int(float(str(sales_raw).replace(",", "").strip())) if pd.notna(sales_raw) else 0
 
-        doc = {
+        rating = float(row["별점(5점)"]) if pd.notna(row["별점(5점)"]) else 0.0
+        style = row["스타일"] if pd.notna(row["스타일"]) else "미지정"
+        category = row["분류"] if pd.notna(row["분류"]) else "기타"
+
+        # 중복 검사 (상품명 + 쇼핑몰)
+        existing_docs = db.collection("products") \
+            .where(filter=("product_name", "==", row["상품명"])) \
+            .where(filter=("shop_name", "==", row["쇼핑몰"])) \
+            .limit(1) \
+            .stream()
+
+        doc_data = {
             "product_name": row["상품명"],
             "price": price,
             "shop_name": row["쇼핑몰"],
-            "rating": float(row["별점(5점)"]),
+            "rating": rating,
             "image_url": row["이미지"],
             "reviews": reviews,
-            "style": row["스타일"] if pd.notna(row["스타일"]) else "미지정",
-            "category": row["분류"] if pd.notna(row["분류"]) else "기타",
+            "style": style,
+            "category": category,
             "sales": sales,
-            "created_at": firestore.SERVER_TIMESTAMP
         }
 
-        db.collection("products").add(doc)
+        existing_docs = list(existing_docs)
+        if existing_docs:
+            # 🔁 기존 문서 → 덮어쓰기 (created_at 유지)
+            existing_docs[0].reference.set(doc_data, merge=True)
+        else:
+            # 🆕 새로운 문서 → created_at 포함 추가
+            doc_data["created_at"] = firestore.SERVER_TIMESTAMP
+            db.collection("products").add(doc_data)
+
         upload_count += 1
 
     except Exception as e:

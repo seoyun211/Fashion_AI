@@ -1,59 +1,82 @@
-// components/AIRecommendationSection.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import AIRecommendationCard from './AIRecommendationCard';
-import { AIRecommendation } from '../types';
-
-const recommendations: AIRecommendation[] = [
-  {
-    id: '1',
-    title: '스타일 분석',
-    description: '당신의 취향을 분석하여 완벽한 스타일을 추천해드립니다',
-    icon: '✨',
-    type: 'style'
-  },
-  {
-    id: '2',
-    title: '이 옷 뭐지?',
-    description: '사진을 넣어 내가 찾는 그 옷을 AI가 찾아드립니다',
-    icon: '🎨',
-    type: 'color'
-  },
-  {
-    id: '3',
-    title: '상황별 추천',
-    description: '데이트, 회사, 파티 등 상황에 맞는 완벽한 코디를 제안합니다',
-    icon: '📅',
-    type: 'occasion'
-  }
-];
+import StyleAnalysis from './functions/StyleAnalysis';
+import ClothingFinder from './functions/ClothingFinder';
+import OccasionRecommendations from './functions/OccasionRecommendations';
+import Toast from './common/Toast';
+import { recommendations } from '../data/recommendations';
+import { useToast } from '../hooks/useToast';
 
 const AIRecommendationSection: React.FC = () => {
+  const [activeFunction, setActiveFunction] = useState<string | null>(null);
+  const [loadingType, setLoadingType] = useState<string | null>(null);
+  const { toastMessage, showToast, showToastMessage, hideToast } = useToast();
+
   const handleRecommendationClick = (type: string) => {
-    const messages = {
-      style: 'AI가 당신의 스타일을 분석중입니다... 잠시만 기다려주세요!',
-      color: 'AI가 최적의 컬러 조합을 찾고 있습니다... 분석중!',
-      occasion: 'AI가 상황에 맞는 완벽한 코디를 준비하고 있습니다!'
-    };
-    alert(messages[type as keyof typeof messages]);
+    if (loadingType) return;
+
+    setLoadingType(type);
+    
+    // Simulate loading
+    setTimeout(() => {
+      setLoadingType(null);
+      setActiveFunction(type);
+      const messages = {
+        style: '스타일 분석',
+        color: '옷 찾기',
+        occasion: '상황별 추천'
+      };
+      showToastMessage(`${messages[type as keyof typeof messages]} 기능이 활성화되었습니다!`);
+    }, 1000);
+  };
+
+  const handleBack = () => {
+    setActiveFunction(null);
+  };
+
+  const renderActiveFunction = () => {
+    switch (activeFunction) {
+      case 'style':
+        return <StyleAnalysis onBack={handleBack} />;
+      case 'color':
+        return <ClothingFinder onBack={handleBack} />;
+      case 'occasion':
+        return <OccasionRecommendations onBack={handleBack} />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl 
-      border border-gray-200">
-      <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        🤖 AI 스타일 추천
-      </h3>
-      {recommendations.map((recommendation) => (
-        <AIRecommendationCard
-          key={recommendation.id}
-          recommendation={recommendation}
-          onClick={handleRecommendationClick}
-        />
-      ))}
-    </div>
+    <>
+      <div className="max-w-md mx-auto">
+        {!activeFunction ? (
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-200">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              🤖 AI 스타일 추천
+            </h3>
+            {recommendations.map((recommendation) => (
+              <AIRecommendationCard
+                key={recommendation.id}
+                recommendation={recommendation}
+                onClick={handleRecommendationClick}
+                isLoading={loadingType === recommendation.type}
+                isActive={activeFunction === recommendation.type}
+              />
+            ))}
+          </div>
+        ) : (
+          renderActiveFunction()
+        )}
+      </div>
+      
+      <Toast 
+        message={toastMessage}
+        isVisible={showToast}
+        onClose={hideToast}
+      />
+    </>
   );
 };
 
 export default AIRecommendationSection;
-
-// 

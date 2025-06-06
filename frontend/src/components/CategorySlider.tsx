@@ -37,7 +37,7 @@ const CategorySlider: React.FC = () => {
   return (
     <section className="mb-12">
       <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        카테고리별 쇼핑
+        카테고리별 인기 제품
       </h2>
       <div className="relative overflow-hidden rounded-3xl shadow-xl bg-white p-6">
         <div 

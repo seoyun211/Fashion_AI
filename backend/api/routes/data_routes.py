@@ -1,13 +1,16 @@
 from fastapi import APIRouter, HTTPException
+from typing import List
 import pandas as pd
 import os
+from datetime import datetime
+from ..models import Product, TrendData, FilterOptions
 
 router = APIRouter()
 
 # 데이터 파일 경로
 DATA_DIR = "backend/data"
 
-@router.get("/products")
+@router.get("/products", response_model=List[Product])
 async def get_products():
     try:
         # 모든 쇼핑몰의 상품 데이터를 합칩니다
@@ -17,12 +20,28 @@ async def get_products():
             if os.path.exists(file_path):
                 df = pd.read_csv(file_path)
                 products = df.to_dict('records')
-                all_products.extend(products)
+                for product in products:
+                    # 데이터를 Pydantic 모델 형식으로 변환
+                    all_products.append({
+                        "id": str(len(all_products) + 1),
+                        "name": product["상품명"],
+                        "price": int(str(product["가격"]).replace(",", "")),
+                        "shop": product["쇼핑몰"],
+                        "likes": int(product["좋아요개수"]),
+                        "image": product["이미지"],
+                        "reviews": int(product["리뷰수"]),
+                        "style": product["스타일"],
+                        "category": product["카테고리"],
+                        "material": product["소재"],
+                        "color": product["색상"],
+                        "season": product["시즌"],
+                        "release_date": datetime.strptime(product["출시일"], "%Y-%m-%d").date()
+                    })
         return all_products
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/trends")
+@router.get("/trends", response_model=TrendData)
 async def get_trends():
     try:
         # 모든 쇼핑몰의 시계열 데이터를 합칩니다
@@ -40,30 +59,33 @@ async def get_trends():
         stock_trend = []
         
         for data in all_time_series:
+            date_obj = datetime.strptime(data["date"], "%Y-%m-%d").date()
             sales_trend.append({
-                "date": data["date"],
-                "value": data["sales"]
+                "date": date_obj,
+                "value": int(data["sales"])
             })
             stock_trend.append({
-                "date": data["date"],
-                "value": data["stock"]
+                "date": date_obj,
+                "value": int(data["stock"])
             })
         
         # 날짜별로 집계
         sales_df = pd.DataFrame(sales_trend)
         stock_df = pd.DataFrame(stock_trend)
         
-        sales_df = sales_df.groupby('date')['value'].sum().reset_index()
-        stock_df = stock_df.groupby('date')['value'].sum().reset_index()
+        if not sales_df.empty:
+            sales_df = sales_df.groupby('date')['value'].sum().reset_index()
+        if not stock_df.empty:
+            stock_df = stock_df.groupby('date')['value'].sum().reset_index()
         
         return {
-            "salesTrend": sales_df.to_dict('records'),
-            "stockTrend": stock_df.to_dict('records')
+            "sales_trend": sales_df.to_dict('records') if not sales_df.empty else [],
+            "stock_trend": stock_df.to_dict('records') if not stock_df.empty else []
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/filter-options")
+@router.get("/filter-options", response_model=FilterOptions)
 async def get_filter_options():
     return {
         "categories": ['상의', '하의', '원피스', '아우터'],

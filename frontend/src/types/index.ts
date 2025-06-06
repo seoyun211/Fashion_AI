@@ -20,13 +20,6 @@ export interface AIRecommendation {
   icon: string;
   type: 'style' | 'color' | 'occasion';
 }
-export interface AIRecommendation {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  type: string;
-}
 
 export interface ToastProps {
   message: string;

@@ -13,8 +13,8 @@ const recommendations: AIRecommendation[] = [
   },
   {
     id: '2',
-    title: '컬러 매칭',
-    description: '피부톤과 개성에 맞는 최적의 컬러 조합을 찾아드립니다',
+    title: '이 옷 뭐지?',
+    description: '사진을 넣어 내가 찾는 그 옷을 AI가 찾아드립니다',
     icon: '🎨',
     type: 'color'
   },

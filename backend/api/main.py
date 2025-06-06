@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -9,11 +10,20 @@ from fastapi.responses import FileResponse
 from api.routes import router
 from api.exceptions import APIError
 from api.error_handlers import api_error_handler, general_exception_handler
+from api.utils.file_cleanup import temp_manager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """애플리케이션 시작 및 종료 시 실행되는 이벤트 핸들러"""
+    yield
+    # 앱 종료 시 정리 작업
+    temp_manager.stop()
 
 app = FastAPI(
     title="Fashion AI API",
     description="패션 트렌드 분석 및 추천 API",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Static 파일 디렉토리 생성

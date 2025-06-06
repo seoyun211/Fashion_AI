@@ -1,8 +1,11 @@
 import React, { useState, useRef } from 'react';
+interface ClothingFinderProps {
+  onBack: () => void;
+}
 
-const ClothingFinder = ({ onBack }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [description, setDescription] = useState('');
+const ClothingFinder: React.FC<ClothingFinderProps> = ({ onBack }) =>  {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); 
+  const [description, setDescription] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
@@ -11,8 +14,11 @@ const ClothingFinder = ({ onBack }) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setSelectedImage(e.target.result);
-      };
+  const result = (e.target as FileReader)?.result;
+  if (typeof result === 'string') {
+    setSelectedImage(result);
+  }
+};
       reader.readAsDataURL(file);
     }
   };
@@ -171,7 +177,7 @@ const ClothingFinder = ({ onBack }) => {
           <label className="block text-sm font-medium text-gray-700 mb-3">설명으로 찾기</label>
           <textarea 
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
             placeholder="어떤 옷을 찾고 계신가요?&#10;예: 검은색 가죽자켓, 흰색 면 티셔츠, 청바지..."
             className="w-full p-4 border border-gray-200 rounded-2xl resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all placeholder-gray-400"
             maxLength={200}

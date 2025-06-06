@@ -4,6 +4,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from api.routes import router
 from api.exceptions import APIError
 from api.error_handlers import api_error_handler, general_exception_handler
@@ -13,6 +15,18 @@ app = FastAPI(
     description="패션 트렌드 분석 및 추천 API",
     version="1.0.0"
 )
+
+# Static 파일 디렉토리 생성
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+os.makedirs(static_dir, exist_ok=True)
+
+# Static 파일 마운트
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Favicon 엔드포인트
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse(os.path.join(static_dir, "favicon.ico"))
 
 # CORS 설정
 app.add_middleware(
@@ -47,4 +61,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="127.0.0.1", port=8001) 

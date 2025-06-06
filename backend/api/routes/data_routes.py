@@ -1,32 +1,13 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, HTTPException
 import pandas as pd
-from datetime import datetime, timedelta
 import os
-from routes import image_search
 
-app = FastAPI()
-
-# CORS 설정
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "http://127.0.0.1:3002"
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+router = APIRouter()
 
 # 데이터 파일 경로
 DATA_DIR = "backend/data"
 
-@app.get("/api/products")
+@router.get("/products")
 async def get_products():
     try:
         # 모든 쇼핑몰의 상품 데이터를 합칩니다
@@ -41,7 +22,7 @@ async def get_products():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/trends")
+@router.get("/trends")
 async def get_trends():
     try:
         # 모든 쇼핑몰의 시계열 데이터를 합칩니다
@@ -82,7 +63,7 @@ async def get_trends():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/filter-options")
+@router.get("/filter-options")
 async def get_filter_options():
     return {
         "categories": ['상의', '하의', '원피스', '아우터'],
@@ -90,10 +71,4 @@ async def get_filter_options():
         "materials": ['면', '린넨', '데님', '실크', '니트', '폴리에스터', '울', '레이온'],
         "colors": ['블랙', '화이트', '네이비', '베이지', '그레이', '브라운', '카키', '레드', '블루'],
         "seasons": ['봄', '여름', '가을', '겨울', '사계절']
-    }
-
-app.include_router(image_search.router)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    } 

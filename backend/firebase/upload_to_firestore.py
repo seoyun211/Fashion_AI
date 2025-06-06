@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import pandas as pd
 import os
+import glob
 from dotenv import load_dotenv
 
 # .env 불러오기
@@ -25,47 +26,41 @@ def clear_products_collection():
 
 clear_products_collection()
 
-# 📄 data 폴더 내 모든 CSV 파일 리스트 가져오기
-all_files = [os.path.join(CSV_FOLDER, f) for f in os.listdir(CSV_FOLDER) if f.endswith('.csv')]
-print(f"🔍 총 {len(all_files)}개의 CSV 파일을 찾았어요.")
+## CSV 병합
+csv_files = glob.glob(os.path.join(CSV_FOLDER, "*.csv"))
+print(f"🔍 총 {len(csv_files)}개의 CSV 파일을 찾았어요.")
 
-# 🧾 여러 CSV 병합
-merged_df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+df_list = [pd.read_csv(file) for file in csv_files]
+merged_df = pd.concat(df_list, ignore_index=True)
 print(f"📊 병합된 데이터 총 {len(merged_df)}개 항목")
 
-# 🔁 Firestore 업로드
+# 업로드
 upload_count = 0
 for _, row in merged_df.iterrows():
     try:
-        # 숫자 처리 (가격, 리뷰수, 판매량 등)
-        price = round(float(str(row["가격"]).replace(",", "").replace("원", "").strip()), 1)
+        # 가격 처리
+        price_raw = str(row["가격"]).replace(",", "").replace("원", "").strip()
+        if '.' in price_raw:
+            price = int(float(price_raw) * 1000)
+        else:
+            price = int(price_raw)
 
-        reviews_raw = str(row.get("리뷰수", 0)).strip()
-        reviews = round(float(reviews_raw), 1) if reviews_raw.lower() != 'nan' else 0
+        # 리뷰수, 판매량 처리
+        reviews_raw = str(row["리뷰수"]).replace(",", "").strip()
+        sales_raw = str(row["판매량"]).replace(",", "").strip()
 
-        sales_raw = str(row.get("판매량", 0)).strip()
-        sales = round(float(sales_raw), 1) if sales_raw.lower() != 'nan' else 0
+        reviews = int(float(reviews_raw)) if reviews_raw else 0
+        sales = int(float(sales_raw)) if sales_raw else 0
 
-        rating_raw = row.get("별점(5점)", 0)
-        rating = round(float(rating_raw), 1) if not pd.isna(rating_raw) else 0.0
-
-        # 문자열 필드 처리
-        style = row.get("스타일", "미지정")
-        category = row.get("분류", "기타")
-        image_url = row.get("이미지", "")
-        shop_name = row.get("쇼핑몰", "")
-        product_name = row.get("상품명", "이름 없음")
-
-        # Firestore 문서
         doc = {
-            "product_name": product_name,
+            "product_name": row["상품명"],
             "price": price,
-            "shop_name": shop_name,
-            "rating": rating,
-            "image_url": image_url,
+            "shop_name": row["쇼핑몰"],
+            "rating": float(row["별점(5점)"]),
+            "image_url": row["이미지"],
             "reviews": reviews,
-            "style": style,
-            "category": category,
+            "style": row["스타일"] if pd.notna(row["스타일"]) else "미지정",
+            "category": row["분류"] if pd.notna(row["분류"]) else "기타",
             "sales": sales,
             "created_at": firestore.SERVER_TIMESTAMP
         }

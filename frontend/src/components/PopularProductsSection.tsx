@@ -1,69 +1,100 @@
 // components/PopularProductsSection.tsx
-import React, { useState, useEffect } from 'react';
-import PopularProductItem from './PopularProductItem';
-import { PopularProduct } from '../types';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+import dayjs from 'dayjs';
 
-const allProducts = [
-  { id: '1', name: '오버사이즈 후드티', price: '39,000원', rank: 1 },
-  { id: '2', name: '와이드 데님 팬츠', price: '65,000원', rank: 2 },
-  { id: '3', name: '체크 무늬 셔츠', price: '45,000원', rank: 3 },
-  { id: '4', name: '미니멀 실버 목걸이', price: '28,000원', rank: 4 },
-  { id: '5', name: '화이트 스니커즈', price: '89,000원', rank: 5 },
-  { id: '6', name: '크롭 니트', price: '52,000원', rank: 6 },
-  { id: '7', name: '슬림핏 블레이저', price: '98,000원', rank: 7 },
-  { id: '8', name: '골드 링 세트', price: '35,000원', rank: 8 },
-];
+interface ChartDataPoint {
+  date: string;
+  [style: string]: string | number;
+}
 
 const PopularProductsSection: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState('');
-  const [popularProducts, setPopularProducts] = useState<PopularProduct[]>([]);
-
-  const updateTime = () => {
-    const now = new Date();
-    const hours = now.getHours();
-    const timeStr = hours < 12 ? `오전 ${hours}:00` : `오후 ${hours - 12}:00`;
-    setCurrentTime(`${timeStr} 기준 실시간 랭킹`);
-  };
-
-  const updateProducts = () => {
-    const shuffled = [...allProducts]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 5)
-      .map((product, index) => ({ ...product, rank: index + 1 }));
-    setPopularProducts(shuffled);
-  };
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+  const [topStyles, setTopStyles] = useState<string[]>([]);
 
   useEffect(() => {
-    updateTime();
-    updateProducts();
-    
-    const interval = setInterval(() => {
-      updateTime();
-      updateProducts();
-    }, 30000); // 30초마다 업데이트 (실제로는 1시간)
+    const fetchData = async () => {
+      const snapshot = await getDocs(collection(db, 'products'));
+      const grouped: { [date: string]: { [style: string]: number } } = {};
 
-    return () => clearInterval(interval);
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const style = data.style || '미지정';
+        const reviews = data.reviews || 0;
+        const createdAt = data.created_at?.toDate?.() || new Date();
+        const dateStr = dayjs(createdAt).format('YYYY-MM-DD');
+
+        if (!grouped[dateStr]) grouped[dateStr] = {};
+        if (!grouped[dateStr][style]) grouped[dateStr][style] = 0;
+
+        grouped[dateStr][style] += reviews;
+      });
+
+      const chartArray = Object.entries(grouped)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([date, styles]) => ({
+          date,
+          ...styles,
+        }));
+
+      // 전체 스타일 누적 리뷰 수 계산
+      const totalCounts: Record<string, number> = {};
+      chartArray.forEach(entry => {
+        Object.entries(entry).forEach(([style, value]) => {
+          if (style !== 'date') {
+            totalCounts[style] = (totalCounts[style] || 0) + (value as number);
+          }
+        });
+      });
+
+      // 리뷰 수 기준 TOP 5 스타일 추출
+      const topN = 5;
+      const topStyleList = Object.entries(totalCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, topN)
+        .map(([style]) => style);
+
+      setChartData(chartArray);
+      setTopStyles(topStyleList);
+      console.log("📊 차트용 데이터:", chartArray);
+      console.log("🔥 상위 스타일:", topStyleList);
+    };
+
+    fetchData();
   }, []);
 
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f50', '#00bcd4'];
+
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl 
-      border border-gray-200">
+    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-200">
       <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        🔥 실시간 인기 제품
+        📈 인기 스타일 변화 추이 (TOP 5)
       </h3>
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white 
-        px-4 py-2 rounded-full text-sm text-center mb-6 animate-pulse">
-        {currentTime}
-      </div>
-      <div>
-        {popularProducts.map((product) => (
-          <PopularProductItem key={product.id} product={product} />
-        ))}
-      </div>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          {topStyles.map((style, idx) => (
+            <Line
+              key={style}
+              type="monotone"
+              dataKey={style}
+              stroke={colors[idx % colors.length]}
+              strokeWidth={2}
+              dot={false}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
 
 export default PopularProductsSection;
-
-// 

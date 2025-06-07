@@ -15,6 +15,10 @@ interface Props {
 }
 
 const ProductList: React.FC<Props> = ({ products }) => {
+
+  console.log("✅ 렌더링할 제품:", products);
+
+
   if (!products.length) {
     return <p className="text-center mt-4 text-gray-500">선택한 카테고리에 해당하는 제품이 없습니다.</p>;
   }

@@ -44,10 +44,10 @@ for _, row in merged_df.iterrows():
         style = row["스타일"] if pd.notna(row["스타일"]) else "미지정"
         category = row["분류"] if pd.notna(row["분류"]) else "기타"
 
-        # 중복 검사 (상품명 + 쇼핑몰)
+        # ✅ 중복 검사 수정 (positional arguments로 변경!)
         existing_docs = db.collection("products") \
-            .where(filter=("product_name", "==", row["상품명"])) \
-            .where(filter=("shop_name", "==", row["쇼핑몰"])) \
+            .where("product_name", "==", row["상품명"]) \
+            .where("shop_name", "==", row["쇼핑몰"]) \
             .limit(1) \
             .stream()
 
@@ -78,3 +78,5 @@ for _, row in merged_df.iterrows():
         print(f"❌ 오류 (상품명: {row.get('상품명', '알 수 없음')}): {e}")
 
 print(f"✅ Firestore 업로드 완료! 총 {upload_count}개 상품 등록됨.")
+
+

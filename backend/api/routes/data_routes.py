@@ -117,3 +117,29 @@ FILTER_OPTIONS = {
 @router.get("/filter-options", response_model=FilterOptions)
 async def get_filter_options():
     return FILTER_OPTIONS 
+
+
+
+data_router = APIRouter()
+
+@data_router.get("/firebase-products-v2")
+async def get_products_by_category_v2(category: str):
+    try:
+        products_ref = db.collection("products").where("category", "==", category)
+        docs = products_ref.stream()
+        results = []
+
+        for doc in docs:
+            data = doc.to_dict()
+            results.append({
+                "id": doc.id,
+                "name": data.get("product_name"),
+                "imageUrl": data.get("image_url"),
+                "likeCount": data.get("likes", 0),
+                "reviewCount": data.get("reviews", 0)
+            })
+
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Firestore Error: {str(e)}")
+

@@ -12,6 +12,8 @@ from routers.image_search import router as image_router
 from api.exceptions import APIError
 from api.error_handlers import api_error_handler, general_exception_handler
 from api.utils.file_cleanup import temp_manager
+from backend.api.routes.data_routes import data_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -62,6 +64,7 @@ app.add_exception_handler(Exception, general_exception_handler)
 # 라우터 등록
 app.include_router(router, prefix="/api")
 app.include_router(image_router) 
+app.include_router(data_router, prefix="/data") 
 
 @app.get("/")
 async def root():

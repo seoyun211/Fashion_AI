@@ -1,41 +1,104 @@
-import React from 'react';
-import { FunctionComponentProps } from '../../types';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/firebaseConfig';
 
-const StyleAnalysis: React.FC<FunctionComponentProps> = ({ onBack }) => (
-  <div className="bg-white rounded-2xl p-6 shadow-lg">
-    <div className="flex items-center justify-between mb-4">
-      <h3 className="text-xl font-bold text-gray-800">✨ 스타일 분석</h3>
-      <button 
-        onClick={onBack}
-        className="text-gray-500 hover:text-gray-700 text-2xl"
-      >
-        ×
-      </button>
-    </div>
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <button className="bg-purple-100 hover:bg-purple-200 p-4 rounded-xl text-center transition-colors">
-          <div className="text-2xl mb-2">👔</div>
-          <div className="text-sm font-medium">포멀</div>
-        </button>
-        <button className="bg-pink-100 hover:bg-pink-200 p-4 rounded-xl text-center transition-colors">
-          <div className="text-2xl mb-2">👕</div>
-          <div className="text-sm font-medium">캐주얼</div>
-        </button>
-        <button className="bg-blue-100 hover:bg-blue-200 p-4 rounded-xl text-center transition-colors">
-          <div className="text-2xl mb-2">🎨</div>
-          <div className="text-sm font-medium">아티스틱</div>
-        </button>
-        <button className="bg-green-100 hover:bg-green-200 p-4 rounded-xl text-center transition-colors">
-          <div className="text-2xl mb-2">🌟</div>
-          <div className="text-sm font-medium">미니멀</div>
-        </button>
+interface Product {
+  id: string;
+  name: string;
+  style: string;
+  image?: string;
+}
+
+const STYLES = ['캐주얼', '미니멀', '스트리트', '걸코어'];
+
+const StyleAnalysis: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const snapshot = await getDocs(collection(db, 'products'));
+      const items: Product[] = [];
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        items.push({
+          id: doc.id,
+          name: data.product_name || '이름 없음',
+          style: data.style || '미지정',
+          image: data.image_url || '',
+        });
+      });
+
+      setProducts(items);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const filtered = selectedStyle
+    ? products.filter(p => p.style === selectedStyle)
+    : [];
+
+  return (
+    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-200 w-full max-w-2xl mx-auto">
+      <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        🎯 원하는 스타일을 골라보세요
+      </h3>
+
+      {/* 스타일 버튼 */}
+      <div className="grid grid-cols-2 gap-6 mb-6">
+        {STYLES.map(style => {
+          const isSelected = selectedStyle === style;
+          return (
+            <button
+              key={style}
+              onClick={() => setSelectedStyle(style)}
+              className={`w-full py-4 rounded-xl font-medium transition-all border shadow-sm ${
+                isSelected
+                  ? 'bg-purple-600 text-white scale-105'
+                  : 'bg-white text-gray-800 hover:bg-gray-100 hover:scale-105'
+              }`}
+            >
+              {style}
+            </button>
+          );
+        })}
       </div>
-      <button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-medium transition-colors">
-        스타일 분석 시작하기
-      </button>
+
+      {/* 선택 결과 */}
+      {selectedStyle && (
+        <>
+          <h4 className="text-md font-semibold text-purple-700 mb-4 text-center">
+            🔍 선택된 스타일: {selectedStyle}
+          </h4>
+
+          {filtered.length > 0 ? (
+            <div className="grid grid-cols-2 gap-5">
+              {filtered.map(product => (
+                <div
+                  key={product.id}
+                  className="rounded-xl border bg-white shadow-sm hover:shadow-md transition p-4"
+                >
+                  {product.image && (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-44 object-cover rounded-md mb-3"
+                    />
+                  )}
+                  <div className="text-base font-semibold text-gray-900">{product.name}</div>
+                  <div className="text-sm text-gray-500">스타일: {product.style}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center">해당 스타일의 상품이 없습니다.</p>
+          )}
+        </>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export default StyleAnalysis;

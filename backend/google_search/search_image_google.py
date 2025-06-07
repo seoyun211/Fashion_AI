@@ -24,13 +24,17 @@ def search_by_image(image_path):
         # 3. input[type='file'] 찾아서 이미지 업로드
         upload_input = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
         upload_input.send_keys(os.path.abspath(image_path))
-        time.sleep(5)  # 분석 기다림
+        
+        print("✅ 이미지 업로드 완료! 분석 중이야~")
+        print("👀 크롬 창에서 결과 확인하고, 엔터 누르면 꺼질 거야.")
 
-        # 4. 분석 결과 URL 받아오기
+        input("📌 엔터를 누르면 크롬 창이 닫혀요. 결과 다 봤으면 눌러줘~")
+
         result_url = driver.current_url
-        print("🔍 유사 이미지 검색 URL:", result_url)
+        print("🔗 결과 URL:", result_url)
 
         return result_url
+
 
     finally:
         driver.quit()

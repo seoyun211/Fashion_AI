@@ -61,7 +61,7 @@ const ClothingFinder: React.FC<ClothingFinderProps> = ({ onBack }) => {
 
       const response = await axios.post('http://localhost:8000/search-image', formData);
       const { result_url } = response.data;
-      window.open(result_url, '_blank');
+      window.open(result_url, '_blank', 'noopener,noreferrer');
     } catch (err) {
       alert('유사 이미지 검색 실패! 서버를 확인해 주세요.');
       console.error(err);

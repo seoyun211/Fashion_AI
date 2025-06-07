@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from api.routes import router
+from routers.image_search import router as image_router
 from api.exceptions import APIError
 from api.error_handlers import api_error_handler, general_exception_handler
 from api.utils.file_cleanup import temp_manager
@@ -60,6 +61,7 @@ app.add_exception_handler(Exception, general_exception_handler)
 
 # 라우터 등록
 app.include_router(router, prefix="/api")
+app.include_router(image_router) 
 
 @app.get("/")
 async def root():
@@ -71,4 +73,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001) 
+    uvicorn.run(app, host="127.0.0.1", port=8000) 

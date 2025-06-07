@@ -7,9 +7,11 @@ from dotenv import load_dotenv
 
 # .env 불러오기
 load_dotenv()
-KEY_PATH = os.getenv("FIREBASE_KEY_PATH")
-KEY_PATH = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")  # 🔥 이렇게 바꿔!
-CSV_FOLDER = os.getenv("DATA_PATH")
+KEY_PATH = (
+    os.getenv("FIREBASE_KEY_PATH")
+    or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+)
+CSV_FOLDER = os.path.abspath(os.getenv("DATA_PATH")) 
 
 # ✅ Firebase 초기화
 if not firebase_admin._apps:

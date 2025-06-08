@@ -45,8 +45,8 @@ const PopularProductsSection: React.FC = () => {
       const totalCounts: Record<string, number> = {};
       chartArray.forEach(entry => {
         Object.entries(entry).forEach(([style, value]) => {
-          if (style !== 'date') {
-            totalCounts[style] = (totalCounts[style] || 0) + (value as number);
+          if (style !== 'date' && typeof value === 'number') {
+            totalCounts[style] = (totalCounts[style] || 0) + value;
           }
         });
       });
